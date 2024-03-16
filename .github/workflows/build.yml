@@ -15,15 +15,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Build project
         run: npm run build
@@ -33,3 +33,15 @@ jobs:
         with:
           name: electron-quick-start.app
           path: ./out/electron-quick-start-darwin-x64
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v${{ github.run_number }}"  # Use run number as part of tag name
+          release_name: "Release ${{ github.run_number }}"  # Use run number as part of release name
+          body: |
+            This release was built from commit: ${{ github.sha }}
+            Release date: ${{ github.event.repository.updated_at }}
