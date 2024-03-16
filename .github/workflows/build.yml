@@ -37,6 +37,7 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v2.0.2
         with:
+          token: ${{ secrets.TOKEN }}
           files: |
             ./out/electron-quick-start-darwin-x64/electron-quick-start.app
           body: |
