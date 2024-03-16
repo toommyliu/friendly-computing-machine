@@ -34,14 +34,11 @@ jobs:
           name: electron-quick-start.app
           path: ./out/electron-quick-start-darwin-x64
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release
+        uses: softprops/action-gh-release@v2.0.2
         with:
-          tag_name: "v${{ github.run_number }}"  # Use run number as part of tag name
-          release_name: "Release ${{ github.run_number }}"  # Use run number as part of release name
+          files: |
+            ./out/electron-quick-start-darwin-x64/electron-quick-start.app
           body: |
             This release was built from commit: ${{ github.sha }}
             Release date: ${{ github.event.repository.updated_at }}
